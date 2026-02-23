@@ -84,23 +84,7 @@ Then use in your `mcp.json`:
 
 ### Option 4: From Private PyPI/Artifactory
 
-If published to your internal package repository:
-
-```json
-{
-  "mcpServers": {
-    "my-sql-server": {
-      "command": "uvx",
-      "args": ["j-mssql-mcp"],
-      "env": {
-        "SQL_SERVER": "your-server.example.com",
-        "SQL_DATABASE": "YourDatabase",
-        "SQL_PORT": "1433"
-      }
-    }
-  }
-}
-```
+If you have published to your internal package repository, the installation is the same as Option 1 but will pull from your private server instead of public PyPI.
 
 ## Configuration
 
@@ -164,7 +148,7 @@ Git is installed but not in the system PATH. Fix it:
    - Click OK on all dialogs
    - **Restart Kiro/your terminal**
 
-**Alternative: Use pip installation instead** (see Option 2 in Installation section above)
+**Alternative: Use pip installation instead** (see Option 3 in Installation section above)
 
 **If Git is not installed:**
 
@@ -259,15 +243,30 @@ j-mssql-mcp
 
 ```bash
 git add .
-git commit -m "Initial commit"
+git commit -m "Update package"
 git push origin main
+```
+
+### To PyPI
+
+```bash
+# Install build tools (first time only)
+pip install build twine
+
+# Build the package
+python3 -m build
+
+# Upload to PyPI
+python3 -m twine upload dist/*
+# Username: __token__
+# Password: your-pypi-api-token
 ```
 
 ### To S3 Artifactory
 
 ```bash
 # Build the package
-python -m build
+python3 -m build
 
 # Upload to S3 (configure your S3 credentials first)
 aws s3 cp dist/j_mssql_mcp-1.0.0-py3-none-any.whl s3://your-bucket/python-packages/
