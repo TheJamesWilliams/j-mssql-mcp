@@ -1,13 +1,13 @@
 # j-mssql-mcp
 
-J SQL Server MCP Server with Windows Authentication support.
+SQL Server MCP Server with Windows Authentication support for Kiro AI.
 
 ## Features
 
 - Windows Authentication (Trusted Connection) for SQL Server
 - Environment-based configuration
 - Read-only query execution for safety
-- Supports Life_RTS database (srts_term_db and srts2lifedb schemas)
+- Supports any SQL Server database with Windows Authentication
 
 ## Installation
 
@@ -18,16 +18,16 @@ No installation needed! Just configure in your `mcp.json`:
 ```json
 {
   "mcpServers": {
-    "sql-life-rts": {
+    "my-sql-server": {
       "command": "uvx",
       "args": [
         "--from",
-        "git+https://github.com/your-org/j-mssql-mcp.git",
+        "git+https://github.com/TheJamesWilliams/j-mssql-mcp.git",
         "j-mssql-mcp"
       ],
       "env": {
-        "SQL_SERVER": "SQ14DB-SRTSD02.sqis-corp.com",
-        "SQL_DATABASE": "Life_RTS",
+        "SQL_SERVER": "your-server.example.com",
+        "SQL_DATABASE": "YourDatabase",
         "SQL_PORT": "1433"
       }
     }
@@ -42,12 +42,12 @@ If published to your internal package repository:
 ```json
 {
   "mcpServers": {
-    "sql-life-rts": {
+    "my-sql-server": {
       "command": "uvx",
       "args": ["j-mssql-mcp"],
       "env": {
-        "SQL_SERVER": "SQ14DB-SRTSD02.sqis-corp.com",
-        "SQL_DATABASE": "Life_RTS",
+        "SQL_SERVER": "your-server.example.com",
+        "SQL_DATABASE": "YourDatabase",
         "SQL_PORT": "1433"
       }
     }
@@ -59,8 +59,8 @@ If published to your internal package repository:
 
 Set these environment variables in your MCP config:
 
-- `SQL_SERVER`: SQL Server hostname (e.g., `SQ14DB-SRTSD02.sqis-corp.com`)
-- `SQL_DATABASE`: Database name (e.g., `Life_RTS`)
+- `SQL_SERVER`: SQL Server hostname (e.g., `your-server.example.com`)
+- `SQL_DATABASE`: Database name (e.g., `YourDatabase`)
 - `SQL_PORT`: Port number (default: `1433`)
 
 ## Usage
@@ -78,7 +78,7 @@ Execute read-only SQL queries against the configured database.
 **Example:**
 
 ```sql
-SELECT TOP 10 * FROM srts_term_db.dbo.Accounts
+SELECT TOP 10 * FROM dbo.YourTable
 ```
 
 ## Safety
@@ -91,7 +91,7 @@ SELECT TOP 10 * FROM srts_term_db.dbo.Accounts
 
 - Python 3.10+
 - Windows environment (for Windows Authentication)
-- ODBC Driver 17 for SQL Server (or compatible)
+- ODBC Driver 18 for SQL Server (or compatible)
 - Network access to SQL Server
 
 ## Development
@@ -100,7 +100,7 @@ SELECT TOP 10 * FROM srts_term_db.dbo.Accounts
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/j-mssql-mcp.git
+git clone https://github.com/TheJamesWilliams/j-mssql-mcp.git
 cd j-mssql-mcp
 
 # Install in development mode
@@ -114,8 +114,8 @@ j-mssql-mcp
 
 ```bash
 # Set environment variables
-export SQL_SERVER="SQ14DB-SRTSD02.sqis-corp.com"
-export SQL_DATABASE="Life_RTS"
+export SQL_SERVER="your-server.example.com"
+export SQL_DATABASE="YourDatabase"
 export SQL_PORT="1433"
 
 # Run the server
@@ -139,9 +139,9 @@ git push origin main
 python -m build
 
 # Upload to S3 (configure your S3 credentials first)
-aws s3 cp dist/j_mssql_mcp-1.0.0-py3-none-any.whl s3://srts-artifactory/python-packages/
+aws s3 cp dist/j_mssql_mcp-1.0.0-py3-none-any.whl s3://your-bucket/python-packages/
 ```
 
 ## License
 
-Internal use only - SelectQuote
+MIT License - Free to use and modify

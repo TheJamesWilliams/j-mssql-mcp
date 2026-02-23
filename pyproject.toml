@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "j-mssql-mcp"
 version = "1.0.0"
-description = "SelectQuote SQL Server MCP with Windows Authentication"
+description = "SQL Server MCP with Windows Authentication for Kiro AI"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
