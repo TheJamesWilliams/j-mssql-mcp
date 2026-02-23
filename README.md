@@ -12,11 +12,29 @@ SQL Server MCP Server with Windows Authentication support for Kiro AI.
 
 ## Installation
 
-### Option 1: Direct from GitHub with uvx (Recommended)
+### Option 1: From PyPI with uvx (Recommended)
+
+No installation needed! Just configure in your `mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "my-sql-server": {
+      "command": "uvx",
+      "args": ["j-mssql-mcp"],
+      "env": {
+        "SQL_SERVER": "your-server.example.com",
+        "SQL_DATABASE": "YourDatabase",
+        "SQL_PORT": "1433"
+      }
+    }
+  }
+}
+```
+
+### Option 2: Direct from GitHub with uvx
 
 **Prerequisites:** Git must be installed on your system.
-
-No Python installation needed! Just configure in your `mcp.json`:
 
 ```json
 {
@@ -38,16 +56,12 @@ No Python installation needed! Just configure in your `mcp.json`:
 }
 ```
 
-### Option 2: Install via pip (No Git Required)
+### Option 3: Install via pip
 
 If you don't have Git installed, you can install directly via pip:
 
 ```bash
-# Install uv if you haven't already
-pip install uv
-
-# Install j-mssql-mcp
-pip install git+https://github.com/TheJamesWilliams/j-mssql-mcp.git
+pip install j-mssql-mcp
 ```
 
 Then use in your `mcp.json`:
@@ -68,7 +82,7 @@ Then use in your `mcp.json`:
 }
 ```
 
-### Option 3: From Private PyPI/Artifactory
+### Option 4: From Private PyPI/Artifactory
 
 If published to your internal package repository:
 
@@ -126,14 +140,37 @@ SELECT TOP 10 * FROM dbo.YourTable
 
 **Problem:** `uvx` needs Git to install from GitHub.
 
-**Solutions:**
+**Check if Git is installed:**
 
-1. **Install Git:**
-   - **Windows**: Download from [git-scm.com](https://git-scm.com/download/win) or `winget install Git.Git`
-   - **Mac**: `brew install git` or install Xcode Command Line Tools
-   - **Linux**: `sudo apt install git` or `sudo yum install git`
+```bash
+git --version
+```
 
-2. **Use pip installation instead** (see Option 2 in Installation section above)
+**If Git is installed but still getting the error (Windows):**
+
+Git is installed but not in the system PATH. Fix it:
+
+1. Find Git location:
+
+   ```powershell
+   where git
+   # Usually: C:\Program Files\Git\cmd\git.exe
+   ```
+
+2. Add to System PATH:
+   - Press `Win + X` → System → Advanced system settings
+   - Environment Variables → System variables → Path → Edit
+   - Add: `C:\Program Files\Git\cmd`
+   - Click OK on all dialogs
+   - **Restart Kiro/your terminal**
+
+**Alternative: Use pip installation instead** (see Option 2 in Installation section above)
+
+**If Git is not installed:**
+
+- **Windows**: Download from [git-scm.com](https://git-scm.com/download/win) or `winget install Git.Git`
+- **Mac**: `brew install git` or install Xcode Command Line Tools
+- **Linux**: `sudo apt install git` or `sudo yum install git`
 
 ### "Can't open lib 'ODBC Driver 18 for SQL Server'"
 
