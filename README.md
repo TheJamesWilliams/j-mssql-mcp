@@ -14,7 +14,9 @@ SQL Server MCP Server with Windows Authentication support for Kiro AI.
 
 ### Option 1: Direct from GitHub with uvx (Recommended)
 
-No installation needed! Just configure in your `mcp.json`:
+**Prerequisites:** Git must be installed on your system.
+
+No Python installation needed! Just configure in your `mcp.json`:
 
 ```json
 {
@@ -36,7 +38,37 @@ No installation needed! Just configure in your `mcp.json`:
 }
 ```
 
-### Option 2: From Private PyPI/Artifactory
+### Option 2: Install via pip (No Git Required)
+
+If you don't have Git installed, you can install directly via pip:
+
+```bash
+# Install uv if you haven't already
+pip install uv
+
+# Install j-mssql-mcp
+pip install git+https://github.com/TheJamesWilliams/j-mssql-mcp.git
+```
+
+Then use in your `mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "my-sql-server": {
+      "command": "j-mssql-mcp",
+      "args": [],
+      "env": {
+        "SQL_SERVER": "your-server.example.com",
+        "SQL_DATABASE": "YourDatabase",
+        "SQL_PORT": "1433"
+      }
+    }
+  }
+}
+```
+
+### Option 3: From Private PyPI/Artifactory
 
 If published to your internal package repository:
 
@@ -90,6 +122,19 @@ SELECT TOP 10 * FROM dbo.YourTable
 
 ## Troubleshooting
 
+### "Git executable not found" Error
+
+**Problem:** `uvx` needs Git to install from GitHub.
+
+**Solutions:**
+
+1. **Install Git:**
+   - **Windows**: Download from [git-scm.com](https://git-scm.com/download/win) or `winget install Git.Git`
+   - **Mac**: `brew install git` or install Xcode Command Line Tools
+   - **Linux**: `sudo apt install git` or `sudo yum install git`
+
+2. **Use pip installation instead** (see Option 2 in Installation section above)
+
 ### "Can't open lib 'ODBC Driver 18 for SQL Server'"
 
 Install the ODBC driver:
@@ -117,6 +162,7 @@ klist
 - ODBC Driver 18 for SQL Server (or compatible)
 - Network access to SQL Server
 - Domain-joined machine OR Kerberos authentication configured
+- **Git** (required for installation from GitHub)
 
 ## Prerequisites by Platform
 
