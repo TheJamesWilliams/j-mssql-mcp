@@ -4,10 +4,11 @@ SQL Server MCP Server with Windows Authentication support for Kiro AI.
 
 ## Features
 
-- Windows Authentication (Trusted Connection) for SQL Server
+- Windows Authentication / Kerberos (Trusted Connection) for SQL Server
+- Works on Windows, Mac, and Linux
 - Environment-based configuration
 - Read-only query execution for safety
-- Supports any SQL Server database with Windows Authentication
+- No passwords in configuration files
 
 ## Installation
 
@@ -87,12 +88,59 @@ SELECT TOP 10 * FROM dbo.YourTable
 - No data modification operations (INSERT, UPDATE, DELETE, etc.)
 - Queries are executed with read-only intent
 
+## Troubleshooting
+
+### "Can't open lib 'ODBC Driver 18 for SQL Server'"
+
+Install the ODBC driver:
+
+- **Mac**: `brew install msodbcsql18`
+- **Windows**: Download from [Microsoft](https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server)
+- **Linux**: Follow [Microsoft's instructions](https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server)
+
+### "Login failed" or Authentication Errors
+
+**Mac/Linux users**: Run `kinit your-username@YOUR-DOMAIN.COM` to get Kerberos tickets
+
+**Windows users**: Ensure your machine is domain-joined and you're logged in with domain credentials
+
+### Check Your Kerberos Tickets (Mac/Linux)
+
+```bash
+klist
+# Look for a ticket like: MSSQLSvc/your-server.domain.com:1433@DOMAIN.COM
+```
+
 ## Requirements
 
 - Python 3.10+
-- Windows environment (for Windows Authentication)
 - ODBC Driver 18 for SQL Server (or compatible)
 - Network access to SQL Server
+- Domain-joined machine OR Kerberos authentication configured
+
+## Prerequisites by Platform
+
+### Windows Users
+
+If your machine is joined to the domain, you're all set! Windows Authentication will work automatically using your logged-in credentials.
+
+### Mac/Linux Users
+
+You need to authenticate with Kerberos before using the MCP:
+
+```bash
+# Authenticate with your domain credentials
+kinit your-username@YOUR-DOMAIN.COM
+
+# Verify you have tickets
+klist
+
+# You should see tickets including one for MSSQLSvc
+```
+
+**Note:** Kerberos tickets typically expire after 8-10 hours. If the MCP stops working, run `kinit` again to refresh your tickets.
+
+**Tip:** If you already use Azure Data Studio or other domain-authenticated tools, you likely already have valid tickets!
 
 ## Development
 
