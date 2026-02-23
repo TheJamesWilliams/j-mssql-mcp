@@ -13,10 +13,11 @@ SQL_PORT = os.getenv("SQL_PORT", "1433")
 
 # Connection string with Windows Authentication
 CONNECTION_STRING = (
-    f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+    f"DRIVER={{ODBC Driver 18 for SQL Server}};"
     f"SERVER={SQL_SERVER},{SQL_PORT};"
     f"DATABASE={SQL_DATABASE};"
     f"Trusted_Connection=yes;"
+    f"TrustServerCertificate=yes;"
 )
 
 app = Server("j-mssql-mcp")
